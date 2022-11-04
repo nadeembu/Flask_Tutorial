@@ -1,11 +1,10 @@
 # Youtube video link:
 # https://www.youtube.com/watch?v=mqhxxeeTbu0&list=PLzMcBGfZo4-n4vJJybUVV3Un_NFS5EOgX
-# Learn Using SQLAlchemy Database
+# Learn Message flashing tutorial
 
 
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from datetime import timedelta
-# import sqlalchemy
 
 
 app = Flask(__name__)
@@ -25,15 +24,18 @@ def home():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
+        # Enable permanent session
         session.permanent = True
         user = request.form["username"]
+        # Setup session data based on what the user typed in.
+        # Session stores ["user"] data as a dictionary.
         session["user"] = user
         flash("Login successful")
         return redirect(url_for("user"))
     else:
         # Check if user already logged in. If so, redirect to user page.
         if "user" in session:
-            flash("Redirected back to the user page. As you were already logged in")
+            flash("Redirected back to the user page. As wou were already logged in")
             return redirect(url_for("user"))
         else:
             return render_template("login.html")
@@ -41,27 +43,22 @@ def login():
 
 @app.route("/logout")
 def logout():
-    flash("You've been logged out", "info")
+    # Check if you were logged in.
+    if "user" in session:
+        user = session["user"]
+        flash("You've been logged out", "info")
+    # Remove "user" from the session dictionary to clear session data
     session.pop("user", None)
-    session.pop("email", None)
     return redirect(url_for("login"))
 
 
-@app.route("/user", methods=["GET", "POST"])
+@app.route("/user")
 def user():
-    email = None
+    # Check if user logged in by checking session information
     if "user" in session:
+        # Get the user data
         user = session["user"]
-
-        if request.method == "POST":
-            email = request.form["email"]
-            session["email"] = email
-            flash("Your email has been saved")
-        else:
-            if "email" in session:
-                email = session["email"]
-
-        return render_template("user.html", email=email)
+        return render_template("user.html", user=user)
     else:
         flash("You are not logged in")
         return redirect(url_for("login"))
