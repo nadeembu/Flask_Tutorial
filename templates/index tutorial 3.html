@@ -1,0 +1,31 @@
+<!---{% extends "base.html" %}--->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=, initial-scale=1.0" />
+    <title>{% block title %}Index Page{% endblock %}</title>
+  </head>
+  <body>
+    <!---
+      Block content here will overwrite what's in the base.html file
+      without it, you won't see this code.
+    -->
+    {% block content %}
+    <h2>Index Page</h2>
+    {% for x in range(10) %} {% if x % 2 == 1 %}
+    <p>{{x}}</p>
+    {% endif %} {% endfor %}
+
+    <!--content is replaced with these values
+        content=["Nadeem", "Tim", "Susan"]) from the home function-->
+    <p>{{content}}</p>
+    <!---Loop through the "content" list above and print out the names-->
+    {% for name in content %} {% if name == "Nadeem" %}
+    <p>{{name}} developed this site</p>
+    {% else %}
+    <p>Hi {{name}} welcome to the site</p>
+    {% endif %} {% endfor %} {% endblock %}
+  </body>
+</html>

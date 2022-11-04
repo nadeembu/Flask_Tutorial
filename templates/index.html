@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=, initial-scale=1.0" />
+    <title>{% block title %}Index Page{% endblock %}</title>
+  </head>
+  <body>
+    <!---
+      Block content here will overwrite what's in the base.html file
+      without it, you won't see this code.
+    -->
+    {% block content %}
+    <h2>Index Page</h2>
+    {{content}}
+    <p>Message displayed from index.html</p>
+    {% endblock %}
+  </body>
+</html>

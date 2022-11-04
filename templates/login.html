@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Login Page{% endblock %}</title>
+  </head>
+  <body>
+    {% block content %}
+    <!---
+    forms are a way to send information to the website, Form action is the
+    url the form is directed to when it's submitted.
+    "#" means stay on the same page
+    -->
+    <h1>Login Page</h1>
+    <form action="#" method="post">
+      <p>Please enter your username to login</p>
+      <p><input type="text" name="username" /></p>
+      <p><input type="submit" value="submit" /></p>
+    </form>
+    {% endblock %}
+  </body>
+</html>
