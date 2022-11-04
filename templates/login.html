@@ -9,6 +9,11 @@
   </head>
   <body>
     {% block content %}
+    <!---Get flashed messages, loop through and display each one-->
+    {% with messages = get_flashed_messages() %} {% if messages %} {% for msg in
+    messages %}
+    <p>{{msg}}</p>
+    {% endfor %} {% endif %} {% endwith%}
     <!---
     forms are a way to send information to the website, Form action is the
     url the form is directed to when it's submitted.

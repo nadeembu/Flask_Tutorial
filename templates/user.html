@@ -8,9 +8,12 @@
     <title>{% block title %}User Page{% endblock%}</title>
   </head>
   <body>
-    {% block content %}
+    {% block content %} {% with messages = get_flashed_messages() %} {% if
+    messages %} {% for msg in messages %}
+    <p>{{msg}}</p>
+    {% endfor %} {% endif %} {% endwith%}
     <h1>User page</h1>
-    <!---<p>{{user}} welcome to the user page</p>--->
+    <p>{{user}} welcome to the user page</p>
     {% endblock %}
   </body>
 </html>

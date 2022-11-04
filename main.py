@@ -1,9 +1,9 @@
 # Youtube video link:
 # https://www.youtube.com/watch?v=mqhxxeeTbu0&list=PLzMcBGfZo4-n4vJJybUVV3Un_NFS5EOgX
-# Learn about sessions
+# Learn Message flashing tutorial
 
 
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from datetime import timedelta
 
 
@@ -30,10 +30,12 @@ def login():
         # Setup session data based on what the user typed in.
         # Session stores ["user"] data as a dictionary.
         session["user"] = user
+        flash("Login successful")
         return redirect(url_for("user"))
     else:
         # Check if user already logged in. If so, redirect to user page.
         if "user" in session:
+            flash("Redirected back to the user page. As wou were already logged in")
             return redirect(url_for("user"))
         else:
             return render_template("login.html")
@@ -41,7 +43,11 @@ def login():
 
 @app.route("/logout")
 def logout():
-    # Remove "user" from the session dictionary to clear session
+    # Check if you were logged in.
+    if "user" in session:
+        user = session["user"]
+        flash("You've been logged out", "info")
+    # Remove "user" from the session dictionary to clear session data
     session.pop("user", None)
     return redirect(url_for("login"))
 
@@ -52,9 +58,9 @@ def user():
     if "user" in session:
         # Get the user data
         user = session["user"]
-        return f"<h1> {user} is being displayed by the user function <h1>"
+        return render_template("user.html", user=user)
     else:
-        # If no user in session information. Redirect to login function
+        flash("You are not logged in")
         return redirect(url_for("login"))
 
 
