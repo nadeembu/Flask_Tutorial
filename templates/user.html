@@ -8,10 +8,12 @@
     <title>{% block title %}User Page{% endblock%}</title>
   </head>
   <body>
+    <!--Code used to display flashed messages by looping through all of them-->
     {% block content %} {% with messages = get_flashed_messages() %} {% if
     messages %} {% for msg in messages %}
     <p>{{msg}}</p>
     {% endfor %} {% endif %} {% endwith%}
+    <!-- Create a form to obtain email from the user -->
     <form action="#" method="POST">
       <input
         type="email"

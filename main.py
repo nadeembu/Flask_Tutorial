@@ -5,16 +5,37 @@
 
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from datetime import timedelta
-# import sqlalchemy
+from flask_sqlalchemy import SQLAlchemy
+
+# NOTE: SQLAlchemy allows you to save data using Python rather than writing SQL
 
 
 app = Flask(__name__)
-
-# Secret key needed to encrypt/decrypt the session data.
 app.secret_key = "nadeemtest"
+app.permanent_session_lifetime = timedelta(minutes=30)
+# Setup DB configuration. Users is the table we will reference.
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite3'
+# Do not track all modification to the DB
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Permanent session data stored for 5 days.
-app.permanent_session_lifetime = timedelta(days=5)
+
+# Create a database object
+db = SQLAlchemy(app)
+
+
+class users(db.Model):
+    # Inherit db.Model which is a DB model and DB related methods.
+    # id will be set as and integer value and as the primary key.
+    _id = db.Column("id", db.Integer, primary_key=True)
+    # Define DB column name, type and set max char length. E.g. 100, 6, etc.
+    name = db.Column(db.String(100))
+    email = db.Column(db.String(100))
+    gender = db.Column(db.String(6))
+
+    def __init__(self, name, email, gender):
+        self.name = name
+        self.email = email
+        self.gender = gender
 
 
 @app.route("/")
@@ -28,6 +49,16 @@ def login():
         session.permanent = True
         user = request.form["username"]
         session["user"] = user
+
+        # Query users class, filter by name and display the first entry found
+        found_user = users.query.filter_by(name=user).first()
+        if found_user:
+            session["email"] = found_user.email
+        else:
+            usr = users(user, "email", "gender")
+            db.session.add(usr)
+            db.session.commit()
+
         flash("Login successful")
         return redirect(url_for("user"))
     else:
@@ -56,8 +87,12 @@ def user():
         if request.method == "POST":
             email = request.form["email"]
             session["email"] = email
-            flash("Your email has been saved")
+            found_user = users.query.filter_by(name=user).first()
+            found_user.email = email
+            db.session.commit()
+            flash("Your email has been saved to the database")
         else:
+            # Get email from session data
             if "email" in session:
                 email = session["email"]
 
@@ -67,10 +102,8 @@ def user():
         return redirect(url_for("login"))
 
 
-@app.route("/<name>")
-def users(name):
-    return render_template("index tutorial 3.html", content=["Nadeem", "Tim", "Susan", "Frank"])
-
-
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Create the database using the "users" class
+    with app.app_context():
+        db.create_all()
+        app.run(host="127.0.0.1", port=5001, debug=True)
