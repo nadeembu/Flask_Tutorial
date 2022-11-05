@@ -1,6 +1,6 @@
 # Youtube video link:
 # https://www.youtube.com/watch?v=mqhxxeeTbu0&list=PLzMcBGfZo4-n4vJJybUVV3Un_NFS5EOgX
-# Learn Adding, Deleting and Updating Users in SQLAlchemy Database.
+# Learn Using SQLAlchemy Database
 
 
 from flask import Flask, render_template, request, redirect, url_for, session, flash
@@ -55,7 +55,6 @@ def login():
         if found_user:
             session["email"] = found_user.email
         else:
-            # Pass user, email and gender to the users class
             usr = users(user, "email", "gender")
             db.session.add(usr)
             db.session.commit()
@@ -82,36 +81,25 @@ def logout():
 @app.route("/user", methods=["GET", "POST"])
 def user():
     email = None
-    gender = None
     if "user" in session:
         user = session["user"]
 
         if request.method == "POST":
             email = request.form["email"]
             session["email"] = email
-
-            gender = request.form["gender"]
-            session["gender"] = gender
-
             found_user = users.query.filter_by(name=user).first()
             found_user.email = email
             db.session.commit()
-            flash("Your details have been saved to the database")
+            flash("Your email has been saved to the database")
         else:
             # Get email from session data
             if "email" in session:
                 email = session["email"]
 
-        return render_template("user.html", email=email, gender=gender)
+        return render_template("user.html", email=email)
     else:
         flash("You are not logged in")
         return redirect(url_for("login"))
-
-
-@app.route("/view")
-def view():
-    # Function used to view information in the database
-    return render_template("view.html", values=users.query.all())
 
 
 if __name__ == "__main__":

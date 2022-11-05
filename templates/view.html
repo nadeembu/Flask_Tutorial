@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View Database Information</title>
+  </head>
+  <body>
+    <!--Code used to display flashed messages by looping through all of them-->
+    {% block content %} {% with messages = get_flashed_messages() %} {% if
+    messages %} {% for msg in messages %}
+    <p>{{msg}}</p>
+    {% endfor %} {% endif %} {% endwith%}
+    <!--Display information from the database-->
+    {% for item in values %}
+    <p>Name: {{item.name}}</p>
+    <p>Email: {{item.email}}</p>
+    <p>Gender: {{item.gender}}</p>
+    {% endfor %} {% endblock %}
+  </body>
+</html>
