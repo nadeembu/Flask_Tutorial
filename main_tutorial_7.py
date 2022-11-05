@@ -53,8 +53,10 @@ def login():
         # Query users class, filter by name and display the first entry found
         found_user = users.query.filter_by(name=user).first()
         if found_user:
+            # Display the users email address
             session["email"] = found_user.email
         else:
+            # Create an entry in the DB for the user
             usr = users(user, "email", "gender")
             db.session.add(usr)
             db.session.commit()
@@ -87,6 +89,7 @@ def user():
         if request.method == "POST":
             email = request.form["email"]
             session["email"] = email
+
             found_user = users.query.filter_by(name=user).first()
             found_user.email = email
             db.session.commit()

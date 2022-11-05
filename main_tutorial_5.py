@@ -30,6 +30,7 @@ def login():
         # Setup session data based on what the user typed in.
         # Session stores ["user"] data as a dictionary.
         session["user"] = user
+        # Redirect to the user function and pass in user
         return redirect(url_for("user"))
     else:
         # Check if user already logged in. If so, redirect to user page.
