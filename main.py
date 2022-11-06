@@ -30,12 +30,10 @@ class users(db.Model):
     # Define DB column name, type and set max char length. E.g. 100, 6, etc.
     name = db.Column(db.String(100))
     email = db.Column(db.String(100))
-    gender = db.Column(db.String(6))
 
-    def __init__(self, name, email, gender):
+    def __init__(self, name, email):
         self.name = name
         self.email = email
-        self.gender = gender
 
 
 @app.route("/")
@@ -55,8 +53,8 @@ def login():
         if found_user:
             session["email"] = found_user.email
         else:
-            # Pass user, email and gender to the users class
-            usr = users(user, "email", "gender")
+            # Pass user, email to the users class
+            usr = users(user, "email")
             db.session.add(usr)
             db.session.commit()
 
@@ -82,17 +80,12 @@ def logout():
 @app.route("/user", methods=["GET", "POST"])
 def user():
     email = None
-    gender = None
     if "user" in session:
         user = session["user"]
 
         if request.method == "POST":
             email = request.form["email"]
             session["email"] = email
-
-            gender = request.form["gender"]
-            session["gender"] = gender
-
             found_user = users.query.filter_by(name=user).first()
             found_user.email = email
             db.session.commit()
@@ -102,7 +95,7 @@ def user():
             if "email" in session:
                 email = session["email"]
 
-        return render_template("user.html", email=email, gender=gender)
+        return render_template("user.html", email=email)
     else:
         flash("You are not logged in")
         return redirect(url_for("login"))

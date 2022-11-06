@@ -1,31 +1,36 @@
-<!---{% extends "base.html" %}--->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=, initial-scale=1.0" />
-    <title>{% block title %}Index Page{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Samples</title>
   </head>
   <body>
-    <!---
-      Block content here will overwrite what's in the base.html file
-      without it, you won't see this code.
-    -->
-    {% block content %}
-    <h2>Index Page</h2>
-    {% for x in range(10) %} {% if x % 2 == 1 %}
-    <p>{{x}}</p>
-    {% endif %} {% endfor %}
+    <p>Sample code to create different types of forms</p>
+    <p>Please enter your details</p>
+    <form action="#" method="POST">
+      <div>
+        <label for="fname">First Name:</label>
+        <input type="text" id="fname" name="fname" /><br />
+      </div>
 
-    <!--content is replaced with these values
-        content=["Nadeem", "Tim", "Susan"]) from the home function-->
-    <p>{{content}}</p>
-    <!---Loop through the "content" list above and print out the names-->
-    {% for name in content %} {% if name == "Nadeem" %}
-    <p>{{name}} developed this site</p>
-    {% else %}
-    <p>Hi {{name}} welcome to the site</p>
-    {% endif %} {% endfor %} {% endblock %}
+      <div>
+        <label for="sname">Surname:</label>
+        <input type="text" id="sname" name="sname" /><br /><br />
+      </div>
+
+      <input type="radio" id="male" name="male" value="Male" />
+      <label for="male">Male</label><br />
+
+      <input type="radio" id="female" name="female" value="Female" />
+      <label for="female">Female</label><br />
+
+      <input type="radio" id="other" name="other" value="Other" />
+      <label for="other">Other</label><br /><br />
+
+      <input type="submit" value="Submit" /><br /><br />
+      <button>Submit</button>
+    </form>
   </body>
 </html>

@@ -13,6 +13,7 @@
     messages %} {% for msg in messages %}
     <p>{{msg}}</p>
     {% endfor %} {% endif %} {% endwith%}
+
     <!-- Create a form to obtain email from the user -->
     <form action="#" method="POST">
       <input
@@ -20,14 +21,6 @@
         name="email"
         placeholder="Enter email"
         value="{{email if email}}"
-      />
-      <br />
-
-      <input
-        type="gender"
-        name="gender"
-        placeholder="Enter Male or Female"
-        value="{{gender if gender}}"
       />
       <br />
       <input type="submit" value="submit" />
