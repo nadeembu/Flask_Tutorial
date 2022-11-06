@@ -38,7 +38,13 @@ class users(db.Model):
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    # Check if user is logged in. If not redirect to login page.
+    if "user" in session:
+        user = session["user"]
+        return render_template("index.html")
+    else:
+        flash("You are not logged in")
+        return redirect(url_for("login"))
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -103,8 +109,14 @@ def user():
 
 @app.route("/view")
 def view():
-    # Function used to view information in the database
-    return render_template("view.html", values=users.query.all())
+    # Function used to view information in the database.
+    # Check if user is logged in. If not redirect to login page.
+    if "user" in session:
+        user = session["user"]
+        return render_template("view.html", values=users.query.all())
+    else:
+        flash("You are not logged in")
+        return redirect(url_for("login"))
 
 
 if __name__ == "__main__":
